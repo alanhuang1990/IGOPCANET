@@ -19,8 +19,8 @@ ImgFormat = 'gray'; %'color' or 'gray'
 %% PCANet parameters (they should be funed based on validation set; i.e., ValData & ValLabel)
 PCANet.NumStages = 2;
 PCANet.PatchSize = 7;
-PCANet.NumFilters = [8 8];
-PCANet.HistBlockSize = [15 15]; 
+PCANet.NumFilters = [8 4];
+PCANet.HistBlockSize = [9 9]; 
 PCANet.BlkOverLapRatio = 0.3;
 PCANet.Lamda = 0;
 fprintf('\n ====== PCANet Parameters ======= \n')
@@ -47,7 +47,7 @@ end
 clear fea gnd;
 
 %% PCANet Training 
-
+tic;
 fprintf('\n ====== PCANet Training ======= \n')
 [ftrain V BlkIdx] = PCANet_train(TrnData_ImgCell,PCANet,1); % BlkIdx serves the purpose of learning block-wise DR projection matrix; e.g., WPCA
 PCANet_TrnTime = toc;
@@ -55,7 +55,7 @@ clear TrnData_ImgCell;
 max_dim = (min(size(ftrain))-1);
 fprintf('Perform PCA on image feature...');
 PCA_V_max = PCA(ftrain', max_dim,1,10000);
-dim = 1000;
+dim = max_dim;
 
 %% PCANET Testing
 

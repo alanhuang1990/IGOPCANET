@@ -64,7 +64,7 @@ if IdtExt == 1 % enable feature extraction
         [OutImg_i ImgIdx_i] = PCA_output(OutImg(OutImgIndex), ones(sum(OutImgIndex),1),...
             PCANet.PatchSize, PCANet.NumFilters(end), V{end});  % compute the last PCA outputs of image "idx"
         
-        [f{idx} BlkIdx] = HashingHist(PCANet,ImgIdx_i,OutImg_i); % compute the feature of image "idx"
+        [f{idx} BlkIdx] = HashingHist2(PCANet,ImgIdx_i,OutImg_i); % compute the feature of image "idx"
         OutImg(OutImgIndex) = cell(sum(OutImgIndex),1); 
     end
     f = [f{:}];
