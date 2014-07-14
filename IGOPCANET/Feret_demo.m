@@ -21,7 +21,7 @@ PCANet.NumStages = 2;
 PCANet.PatchSize = 7;
 PCANet.NumFilters = [8 4];
 PCANet.HistBlockSize = [15 15]; 
-PCANet.BlkOverLapRatio = 0.3;
+PCANet.BlkOverLapRatio = 0.5;
 PCANet.Lamda = 0;
 fprintf('\n ====== PCANet Parameters ======= \n')
 PCANet
@@ -103,8 +103,7 @@ nTestImg = length(TestLabels);
 nCorrRecog = 0;
 RecHistory = zeros(nTestImg,1);
 tic; 
-PCA_V=PCA_V_max(:,1:dim);    
-PCA_ftrain = ftrain'*PCA_V;
+
 for idx = 1:1:nTestImg
 
     ftest = PCANet_FeaExt(TestData_ImgCell(idx),V,PCANet); % extract a test feature using trained PCANet model 
