@@ -87,16 +87,12 @@ for itr_train = 1:length(t_num)
         TrnData_ImgCell = mat2imgcell(TrnData,ImgSize,ImgSize,ImgFormat); % convert columns in TrnData to cells 
 
         tic;
-        [ftrain V BlkIdx] = PCANet_train(TrnData_ImgCell,PCANet,PCANet.Lamda); % BlkIdx serves the purpose of learning block-wise DR projection matrix; e.g., WPCA
+        [ftrain V BlkIdx] = PCANet_train(TrnData_ImgCell,PCANet,1); % BlkIdx serves the purpose of learning block-wise DR projection matrix; e.g., WPCA
         PCANet_TrnTime = toc;
         clear TrnData_ImgCell; 
 
          %% PCANet Validation
-        fprintf('Extracting training image feature...');
-        TrnData_ImgCell = mat2imgcell(TrnData,ImgSize,ImgSize,ImgFormat);
-        
-        [ftrain BlkIdx] = PCANet_FeaExt(TrnData_ImgCell,V,PCANet);
-        clear TrnData_ImgCell; 
+
         
         max_dim = (min(size(ftrain))-2);
         fprintf('\nPerform PCA on image feature...');

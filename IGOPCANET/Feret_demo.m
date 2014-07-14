@@ -21,7 +21,11 @@ PCANet.NumStages = 2;
 PCANet.PatchSize = 7;
 PCANet.NumFilters = [8 4];
 PCANet.HistBlockSize = [15 15]; 
+<<<<<<< HEAD
 PCANet.BlkOverLapRatio = 0;
+=======
+PCANet.BlkOverLapRatio = 0.3;
+>>>>>>> 94090aef17edfb1875db46904d3f1c67f0dbd7c4
 PCANet.Lamda = 0;
 fprintf('\n ====== PCANet Parameters ======= \n')
 PCANet
@@ -59,7 +63,46 @@ dim = max_dim;
 
 %% PCANET Testing
 
-fprintf('\n ====== PCANet Testing ======= \n')
+fprintf('\n ====== PCANet Testing for dup1======= \n')
+nTestImg = length(TestLabels);
+nCorrRecog = 0;
+RecHistory = zeros(nTestImg,1);
+tic; 
+PCA_V=PCA_V_max(:,1:dim);    
+PCA_ftrain = ftrain'*PCA_V;
+for idx = 1:1:nTestImg
+
+    ftest = PCANet_FeaExt(TestData_ImgCell(idx),V,PCANet); % extract a test feature using trained PCANet model 
+    Y_Idx = knnsearch(PCA_ftrain,ftest'*PCA_V,'k',1,'distance','cosine');
+    %Y_Idx = knnsearch(ftrain,ftest','k',1,'distance',@ChiDist);
+    xLabel_est = TrnLabels(Y_Idx);
+    if xLabel_est == TestLabels(idx)
+        RecHistory(idx) = 1;
+        nCorrRecog = nCorrRecog + 1;
+    end
+    if 0==mod(idx,nTestImg/100); 
+        fprintf('Accuracy up to %d tests is %.2f%%; taking %.2f secs per testing sample on average. \n',...
+            [idx 100*nCorrRecog/idx toc/idx]); 
+    end 
+    TestData_ImgCell{idx} = [];
+end
+Averaged_TimeperTest = toc/nTestImg;
+Accuracy = nCorrRecog/nTestImg; 
+ErRate = 1 - Accuracy;
+
+ER1 = ErRate;
+
+
+load('../../Feret/dup2.mat');
+TestData_ImgCell = fea;
+TestLabels = gnd;
+TestLabels = cell2mat(TestLabels);
+for i =1:length(TestData_ImgCell)
+    TestData_ImgCell{i} = double(TestData_ImgCell{i});
+end
+clear fea gnd;
+
+fprintf('\n ====== PCANet Testing for dup2======= \n')
 nTestImg = length(TestLabels);
 nCorrRecog = 0;
 RecHistory = zeros(nTestImg,1);
@@ -87,9 +130,11 @@ Accuracy = nCorrRecog/nTestImg;
 ErRate = 1 - Accuracy;
 
 
+ER2 =ErRate;
+
 %% Results display
-fprintf('\n ===== Results of PCANet, followed by a linear SVM classifier =====');
+fprintf('\n ===== Results of PCANet, followed by a NN classifier =====');
 fprintf('\n     PCANet training time: %.2f secs.', PCANet_TrnTime);
-fprintf('\n     Average testing error rate: %.2f%%',ErRate*100);
+fprintf('\n     Average testing error rate: %.2f%%  %.2f%% ',ER1*100,ER2*100);
 fprintf('\n     Average testing time %.2f secs per test sample. \n\n',Averaged_TimeperTest);
 

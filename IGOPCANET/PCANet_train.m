@@ -1,4 +1,4 @@
-function [f V BlkIdx] = PCANet_train(InImg,PCANet,IdtExt,Lamda)
+function [f V BlkIdx] = PCANet_train(InImg,PCANet,IdtExt)
 % =======INPUT=============
 % InImg     Input images (cell); each cell can be either a matrix (Gray) or a 3D tensor (RGB)  
 % PCANet    PCANet parameters (struct)
