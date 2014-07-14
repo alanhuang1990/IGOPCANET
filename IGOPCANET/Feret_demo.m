@@ -12,7 +12,7 @@ addpath('./Utils');
 addpath('./Liblinear');
 
 
-ImgSize = [150 130]; 
+ImgSize = [130 130]; 
 ImgFormat = 'gray'; %'color' or 'gray'
 
 
@@ -21,14 +21,14 @@ PCANet.NumStages = 2;
 PCANet.PatchSize = 7;
 PCANet.NumFilters = [8 4];
 PCANet.HistBlockSize = [15 15]; 
-PCANet.BlkOverLapRatio = 0.5;
+PCANet.BlkOverLapRatio = 0.2;
 PCANet.Lamda = 0;
 fprintf('\n ====== PCANet Parameters ======= \n')
 PCANet
 
 
 %% Read data for training and testing
-load('../../Feret/gallery.mat'); 
+load('../../Feret/gallery_new.mat'); 
 TrnData_ImgCell = fea;
 TrnLabels = gnd;
 TrnLabels = cell2mat(TrnLabels);
@@ -37,7 +37,7 @@ for i =1:length(TrnData_ImgCell)
     TrnData_ImgCell{i} = double(TrnData_ImgCell{i});
 end
 
-load('../../Feret/dup1.mat');
+load('../../Feret/dup1_new.mat');
 TestData_ImgCell = fea;
 TestLabels = gnd;
 TestLabels = cell2mat(TestLabels);
@@ -89,7 +89,7 @@ ErRate = 1 - Accuracy;
 ER1 = ErRate;
 
 
-load('../../Feret/dup2.mat');
+load('../../Feret/dup2_new.mat');
 TestData_ImgCell = fea;
 TestLabels = gnd;
 TestLabels = cell2mat(TestLabels);
@@ -133,3 +133,5 @@ fprintf('\n     PCANet training time: %.2f secs.', PCANet_TrnTime);
 fprintf('\n     Average testing error rate: %.2f%%  %.2f%% ',ER1*100,ER2*100);
 fprintf('\n     Average testing time %.2f secs per test sample. \n\n',Averaged_TimeperTest);
 
+
+save('FERET_res.mat','ER1','ER2','PCANet','V');

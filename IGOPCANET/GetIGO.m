@@ -16,9 +16,13 @@ function fhy = GetIGO(img_in)
 
 [bx,by] = gradient(img_in);
 ang = angle(bx + 1i*by);
+<<<<<<< HEAD
+ang(ang == pi/2) = 0;
+=======
 %ang(ang == pi/2) = 0;
 
 %ang(ang == 3*pi/2) = 0;
+>>>>>>> 94090aef17edfb1875db46904d3f1c67f0dbd7c4
 fhy = cos(ang) + 1i*sin(ang);
 
 end
