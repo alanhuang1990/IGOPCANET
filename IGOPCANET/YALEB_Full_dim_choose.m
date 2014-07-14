@@ -38,13 +38,13 @@ PCANet.Lamda=0;
 % this is IGOPCANET   lamda make no difference
 t_num = [5 10 20 30 40 50];
 
-for itr_train = 5:length(t_num)
+for itr_train = 1:length(t_num)
     train_num = t_num(itr_train);
 
     F_acc = [];
     F_err = [];
     F_dims = [];
-    for itr = 1:50
+    for itr = 1:5
         DataSplitsAddr = [DataSplitsAddrPre int2str(train_num) 'Train/' int2str(itr) '.mat'];
 
         %fprintf(DataSplitsAddr);
